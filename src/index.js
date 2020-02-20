@@ -1,7 +1,7 @@
 const path = require('path')
 const express = require('express')
 const hbs = require('hbs')
-
+const session = require('express-session')
 require('./db/mongoose')
 
 const userRouter = require('./routers/user')
@@ -25,6 +25,14 @@ hbs.registerPartials(partialsPath)
 app.use(express.static(publicDirectoryPath))
 
 
+app.use(session({
+	secret: 'secret',
+	resave: true,
+	saveUninitialized: true
+}));
+
+app.use(express.urlencoded({ extended: false }));
+
 // app.use((req,res, next) => {
 //     //  console.log(req.method, req.path)
 //     if(req.method === 'GET'){
@@ -44,13 +52,11 @@ app.use(userRouter)
 app.use(taskRouter)
 
 app.get('', (req, res)=> {
-    res.render('index',{
-        title:'Weather Forecast',
+    res.render('index2',{
+        title:'Your Task Management Web-Application',
         name: 'Mehul Patni'
     })
 })
-
-
 
 const multer = require('multer')
 const upload = multer({

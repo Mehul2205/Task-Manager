@@ -6,7 +6,10 @@ const router = express.Router()
 // GET /tasks?cpmleted=true
 // GET /task?limit=10&skip=10
 // GET tasks?sortBy=cratedAt:desc
-router.get('/tasks', auth, async (req,res) => {
+
+
+router.get('/users/tasks', auth, async (req,res) => {
+
     const match = {}
     const sort = {}
     if(req.query.completed){
@@ -28,7 +31,13 @@ router.get('/tasks', auth, async (req,res) => {
                 sort
             }
         }).execPopulate()
-        res.send(req.user.tasks)
+        //res.send(req.user.tasks)
+        res.render('dashboard',{
+            title:'Login Portal',
+            name: 'Mehul Patni',
+            tasks: req.user.tasks
+        })
+        
     }catch{
         res.status(500).send()
     }

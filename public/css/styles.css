@@ -1,0 +1,7 @@
+.back-arrow{
+    text-decoration: none;
+    color: blueviolet;
+}
+.back-arrow:hover{
+    color: #4b2354;
+}

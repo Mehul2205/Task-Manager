@@ -5,15 +5,35 @@ const {sendWelcomeEmail, sendondeletionEmail} = require('../emails/account')
 const User = require('../models/user')
 const router = express.Router()
 const auth = require('../middleware/auth')
+const session = require('express-session')
+
+router.get('/signup', async (req,res) =>{
+    res.render('signup',{
+        title:'Login Portal',
+        name: 'Mehul Patni'
+    })
+})
 
 
-router.post('/users', async (req,res)=>{
-    const user = new User(req.body)
+router.post('/signup', async (req,res)=>{
+    
+    const user = new User({
+        email: req.body.uemail,
+        name: req.body.uname,
+        age: req.body.uage,
+        password: req.body.upassword
+    })
+
     try{
         await user.save()
-        sendWelcomeEmail(user.email, user.name)
+        //sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
-        res.status(201).send({user, token})
+        res.setHeader('Authorization', 'Bearer '+ token); 
+        console.log(req.header('Authorization'))
+        res.header('Authorization', 'Bearer '+ token);
+        console.log(req.header('Authorization'))
+        res.redirect('/users/tasks')
+        //res.status(201).send({user, token})
         
     }catch(e){
         res.status(500).send(e)
@@ -25,41 +45,62 @@ router.post('/users', async (req,res)=>{
     // })
 })
 
-router.post('/users/login', async (req, res) =>{
-    try{
-        const user = await User.findByCredentials(req.body.email, req.body.password)
-        const token = await user.generateAuthToken()
 
-        res.send({user, token})
+router.get('/login', async (req,res) =>{
+    res.render('login',{
+        title:'Login Portal',
+        name: 'Mehul Patni'
+    })
+})
+
+
+router.post('/login', async (req, res) =>{
+    try{
+        await res.setHeader('Content-Type', 'application/json');
+        console.log(req.body)
+        const user = await User.findByCredentials(req.body.uemail, req.body.upassword)
+        console.log(user)
+        const token = await user.generateAuthToken()
+        console.log(token)
+        req.session.token = token
+        //res.header('Authorization', 'Bearer ' + token)
+        // res.writeHeader('Authorization','bearer '+token)
+        // res.setHeader('Authorization', 'bearer '+token)
+        // res.set({
+        //    Authorization: 'Bearer '+token
+        //})
+        res.redirect('/users/tasks')
+        
+
+        //  res.send({user, token})
     } catch(e){
         res.status(400).send(e)
     }
 })
 
-router.post('/users/logout', auth, async (req, res) => {
+
+router.get('/users/logout', auth, async (req, res) => {
     try{
         req.user.tokens = req.user.tokens.filter((token) => {
             return token.token !== req.token
         })
         await req.user.save()
-        res.send()
-
+        res.redirect('/login')
     } catch(e) {
         res.status(500).send(e)
     }
 })
 
-router.post('/users/logoutAll', auth, async (req, res) => {
+router.get('/users/logoutAll', auth, async (req, res) => {
     try{
         req.user.tokens = []
         await req.user.save()
-        res.send()
+        res.redirect('/login')
         
     } catch(e) {
         res.status(500).send(e)
     }
 })
-
 
 router.get('/users/me', auth, async (req,res) => {
     res.send(req.user)

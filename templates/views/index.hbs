@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" type="text/css"  href="css/styles1.css">
+<link rel="stylesheet" type="text/css"  href="/css/styles1.css">
 </head>
 <body>
-
+  
 <div id="myDIV" class="header">
-  <h2 style="margin:5px">My To Do List</h2>
+  <h2 style="margin:5px">{{title}}</h2>
   <input type="text" id="myInput" placeholder="Title...">
   <span onclick="newElement()" class="addBtn">Add</span>
 </div>
@@ -20,8 +20,8 @@
   <li>Read a book</li>
   <li>Organize office</li>
 </ul>
-
-<script src="js/javascript1.js"></script>
+{{>footer}}
+<script src="/js/javascript1.js"></script>
 
 </body>
 </html>
