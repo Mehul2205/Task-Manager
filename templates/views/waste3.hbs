@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Create Object from JSON String</h2>
+
+<table>
+        <thead>
+            <tr>
+                <th>Select</th>
+                <th>Name</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody id="myBD5">
+        </tbody>
+        <p id="myBd"></p>
+        <p id="myBd1"></p>
+        <p id="myBd2"></p>
+        <p id="myBd3"></p>
+</table>
+<script src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+var txt = [{"name":"John", "age":30, "city":"New York"},{"name":"Johbnvcvbn", "age":40, "city":"New York"}]
+for (let i=0;i<txt.length;i++) {
+	var b = txt[i];
+    var task = '<tr>'+'<td>'+b.name+'</td>'+'<td>'+b.age+'</td>'+'<td>'+b.city+'</td>'+'</tr>';
+    $("#myBD5").append(task);
+   	
+}
+$('#myBd2').text(b);
+$('#myBd3').innerHTML(task);
+  
+var obj = JSON.parse(txt);
+$('#myBd').text(txt.length);
+$('#myBd1').text(Object.keys(txt).length);
+
+</script>
+
+</body>
+</html>

@@ -26,12 +26,10 @@ router.post('/signup', async (req,res)=>{
 
     try{
         await user.save()
+        await res.setHeader('Content-Type', 'application/json');
         //sendWelcomeEmail(user.email, user.name)
         const token = await user.generateAuthToken()
-        res.setHeader('Authorization', 'Bearer '+ token); 
-        console.log(req.header('Authorization'))
-        res.header('Authorization', 'Bearer '+ token);
-        console.log(req.header('Authorization'))
+        req.session.token = token
         res.redirect('/users/tasks')
         //res.status(201).send({user, token})
         
@@ -57,11 +55,8 @@ router.get('/login', async (req,res) =>{
 router.post('/login', async (req, res) =>{
     try{
         await res.setHeader('Content-Type', 'application/json');
-        console.log(req.body)
         const user = await User.findByCredentials(req.body.uemail, req.body.upassword)
-        console.log(user)
         const token = await user.generateAuthToken()
-        console.log(token)
         req.session.token = token
         //res.header('Authorization', 'Bearer ' + token)
         // res.writeHeader('Authorization','bearer '+token)

@@ -18,7 +18,6 @@
   <!-- CSS Just for demo purpose, don't include it in your project -->
   <link href="/demo/demo.css" rel="stylesheet" />
   <script src="https://kit.fontawesome.com/38635abe8d.js" crossorigin="anonymous"></script>
-
 </head>
 
 <body class="">
@@ -208,27 +207,24 @@
                             <thead>
                               <tr>
                                 <th class="text-center">#</th>
-                                <th></th>
                                 <th>Description</th>
                                 <th class="text-right">Action</th>
                               </tr>
                             </thead>
                             <tbody id="myBd">
-
+                              {{#each tasks }}
+                              <tr>
+                                <td class="text-center"><b>{{ this.completed }}</b></td>
+                                <td>{{ this.description }}</td>
+                                <td class="td-actions text-right">
+                                  <button type="button" rel="tooltip" class="btn btn-danger">
+                                    <i class="material-icons">close</i>
+                                  </button>
+                                </td>
+                              </tr>
+                              {{/each}}
                             </tbody>
                           </table>
-                          <script>
-                            var obj = {{tasks}}
-                            allTasks = obj.task
-                            console.log(allTasks)
-                            var j;
-                            for(j=0; j < allTasks.task.length; j++){
-                              var b = allTasks.task[j];
-                              var task = '<tr><td>'+j+1+'</td>'+'<td>'+b.completed+'</td>'+'<td>'+b.description+'</td>'+'<td>'+'</td>'+'</tr>';
-                              $("#myBd").append(task);
-                            }
-                          </script>
-
                         </div>
                       </div>
                     </div>
@@ -320,7 +316,6 @@
   <script src="/js/material-dashboard.js?v=2.1.0" type="text/javascript"></script>
   <!-- Material Dashboard DEMO methods, don't include it in your project! -->
   <script src="/demo/demo.js"></script>
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
   <script>
     $(document).ready(function() {
       // Javascript method's body can be found in assets/js/demos.js
